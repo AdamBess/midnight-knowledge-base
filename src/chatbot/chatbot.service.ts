@@ -3,6 +3,7 @@ import { initChatModel } from 'langchain';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { PGVectorStore } from '@langchain/community/vectorstores/pgvector';
 import { PlaywrightWebBaseLoader } from '@langchain/community/document_loaders/web/playwright';
+import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 
 @Injectable()
 export class ChatbotService {
@@ -51,5 +52,14 @@ export class ChatbotService {
       .replace(/Click to view more about.*?\n/g, '')
       .replace(/\s{2,}/g, ' ')
       .trim();
+
+    const splitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
+      chunkOverlap: 200,
+    });
+
+    const allSplits = await splitter.splitDocuments(docs);
+
+    await vectorStore.addDocuments(allSplits);
   }
 }
