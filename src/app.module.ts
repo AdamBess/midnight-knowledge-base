@@ -3,10 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { ChatbotService } from './chatbot/chatbot.service';
+import { ChatbotController } from './chatbot/chatbot.controller';
+import { ConfigModule } from '@nestjs/config' 
 
 @Module({
   imports: [
     HealthModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -18,7 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       synchronize: true
     })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ChatbotController],
+  providers: [AppService, ChatbotService],
 })
 export class AppModule {}
