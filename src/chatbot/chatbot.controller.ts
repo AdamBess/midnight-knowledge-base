@@ -7,12 +7,12 @@ export class ChatbotController {
         private chatbotService: ChatbotService
     ) {}
 
-    @Get()
-    chatbot() {
+    @Get('chat')
+    chat() {
         return this.chatbotService.chat();
     }
     
-    @Post()
+    @Post('ingest')
     ingest() {
         return this.chatbotService.ingest();
     }
