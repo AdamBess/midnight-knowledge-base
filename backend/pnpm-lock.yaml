@@ -6,7 +6,7 @@ settings:
 
 importers:
 
-  backend:
+  .:
     dependencies:
       '@langchain/community':
         specifier: ^1.1.23
