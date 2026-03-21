@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SystemMessage } from 'langchain';
+import { BaseMessage, SystemMessage } from 'langchain';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { PGVectorStore } from '@langchain/community/vectorstores/pgvector';
 import { PlaywrightWebBaseLoader } from '@langchain/community/document_loaders/web/playwright';
@@ -34,22 +34,25 @@ export class ChatbotService {
     await this.vectorStore.addDocuments(docs);
   }
 
-  async chat() {
+  async chat(question: string) {
     const agent = await this.createChatAgent();
 
-    let inputMessage = `Is there any new race introduced in World Of Warcraft: Midnight?
-    Once you get the answer, look up as which classes this race is playable.`;
     let agentInputs = {
-      messages: [{ role: 'user', content: inputMessage }],
+      messages: [{ role: 'user', content: question }],
     };
 
     const stream = await agent.stream(agentInputs, {
       streamMode: 'values',
     });
+
+    let lastMessage: BaseMessage | undefined;
     for await (const step of stream) {
-      const lastMessage = step.messages[step.messages.length - 1];
-      console.log(`[${lastMessage.type}]: ${lastMessage.content}`);
-      console.log('-----\n');
+      lastMessage = step.messages[step.messages.length - 1];
+    }
+    if(!lastMessage) {
+      throw new Error('Agent returned no response.')
+    } else {
+      return lastMessage.content;
     }
   }
 

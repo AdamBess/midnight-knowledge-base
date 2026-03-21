@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ChatbotService } from './chatbot.service';
 
 @Controller('chatbot')
@@ -7,9 +7,9 @@ export class ChatbotController {
         private chatbotService: ChatbotService
     ) {}
 
-    @Get('chat')
-    chat() {
-        return this.chatbotService.chat();
+    @Post('chat')
+    chat(@Body('question') question: string) {
+        return this.chatbotService.chat(question);
     }
     
     @Post('ingest')
