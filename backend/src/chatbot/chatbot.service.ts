@@ -52,7 +52,7 @@ export class ChatbotService {
     if(!lastMessage) {
       throw new Error('Agent returned no response.')
     } else {
-      return lastMessage.content;
+      return { answer: lastMessage.content };
     }
   }
 
