@@ -114,6 +114,22 @@
   animation: messageIn 0.25s ease-out;
 }
 
+/* Markdown content inside AI messages */
+.message-ai ul,
+.message-ai ol {
+  padding-left: 1.5em;
+  margin: 8px 0;
+  text-align: left;
+}
+
+.message-ai li {
+  margin-bottom: 4px;
+}
+
+.message-ai p {
+  margin: 4px 0;
+}
+
 @keyframes messageIn {
   from {
     opacity: 0;
@@ -137,6 +153,7 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #a8a0b8;
+  text-align: left;
 }
 
 /* ── Input Area ── */

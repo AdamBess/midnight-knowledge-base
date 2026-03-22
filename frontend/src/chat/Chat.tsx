@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Chat.css';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'ai';
@@ -62,7 +63,7 @@ export default function Chat() {
         ) : (
           messages.map((msg, i) => (
             <div key={i} className={`message message-${msg.role}`}>
-              {msg.content}
+              <ReactMarkdown>{msg.content}</ReactMarkdown>
             </div>
           ))
         )}
