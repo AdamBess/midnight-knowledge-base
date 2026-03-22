@@ -12,6 +12,7 @@ import { MemorySaver } from "@langchain/langgraph";
 @Injectable()
 export class ChatbotService {
   private vectorStore: PGVectorStore;
+  private checkpointer: MemorySaver;
 
   async onModuleInit() {
     const embeddings = new OpenAIEmbeddings({
@@ -28,6 +29,7 @@ export class ChatbotService {
       },
       tableName: 'midnight_guides',
     });
+    this.checkpointer = new MemorySaver();
   }
 
   async ingest() {
@@ -112,7 +114,6 @@ export class ChatbotService {
 
   private async createChatAgent() {
     const tools = this.createRetrieveTool();
-    const checkpointer = new MemorySaver();
     const systemPrompt = new SystemMessage(
       'You are a knowledge assistant exclusively for World of Warcraft: Midnight.' +
         'Only answer questions related to World of Warcraft: Midnight features, content' +
@@ -127,7 +128,7 @@ export class ChatbotService {
     const agent = createAgent({ 
       model: 'gpt-5',
       tools,
-      checkpointer,
+      checkpointer: this.checkpointer,
       systemPrompt });
     return agent;
   }
