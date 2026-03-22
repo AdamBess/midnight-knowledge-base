@@ -99,7 +99,7 @@ sequenceDiagram
 1. Clone the repository
    ```bash
    git clone https://github.com/AdamBess/midnight-knowledge-base.git
-   cd rag-chatbot
+   cd midnight-knowledge-base
    ```
 
 2. Configure environment variables
