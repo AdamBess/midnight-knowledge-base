@@ -4,7 +4,7 @@ A RAG (Retrieval-Augmented Generation) chatbot that answers questions about the 
 
 > **Disclaimer:** This project is for educational and portfolio purposes only. All World of Warcraft content and data from [Wowhead](https://www.wowhead.com) belongs to their respective owners (Blizzard Entertainment / Wowhead). This project is not affiliated with or endorsed by them and is not intended for commercial use.
 
-![Chat with Question](public/chat-with-question.png)
+![Chat with Question](docs/screenshots/chat-with-question.png)
 
 **Data source:** [Wowhead Midnight Expansion Overview](https://www.wowhead.com/guide/midnight/expansion-overview)
 
