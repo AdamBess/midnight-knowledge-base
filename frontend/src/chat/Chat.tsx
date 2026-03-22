@@ -13,7 +13,7 @@ export default function Chat() {
   const [userInput, setUserInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [threadId, setThreadId] = useState(crypto.randomUUID())
+  const threadId = useRef(crypto.randomUUID())
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -35,7 +35,7 @@ export default function Chat() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ question: userInput, threadId: threadId }),
+        body: JSON.stringify({ question: userInput, threadId: threadId.current }),
       });
       const data = await response.json();
       setMessages((prev) => [...prev, { role: 'ai', content: data.answer }]);
