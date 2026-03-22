@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Chat.css';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   role: 'user' | 'ai';
@@ -12,7 +13,6 @@ export default function Chat() {
   const [userInput, setUserInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: 'smooth',
@@ -63,7 +63,7 @@ export default function Chat() {
         ) : (
           messages.map((msg, i) => (
             <div key={i} className={`message message-${msg.role}`}>
-              <ReactMarkdown>{msg.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
             </div>
           ))
         )}
