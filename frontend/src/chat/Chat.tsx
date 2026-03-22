@@ -7,46 +7,85 @@ interface Message {
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit() {
-    setMessages([...messages, { role: 'user', content: userInput }]);
-    setUserInput('');
-    const response = await fetch('http://localhost:3000/chatbot/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ question: userInput }),
-    });
-    const data = await response.json();
+    if (!userInput.trim() || isLoading) return;
 
-    setMessages(prev => [...prev, { role: 'ai', content: data.answer }]);
+    const question = userInput;
+    setMessages((prev) => [...prev, { role: 'user', content: question }]);
+    setUserInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/chatbot/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: userInput }),
+      });
+      const data = await response.json();
+      setMessages((prev) => [...prev, { role: 'ai', content: data.answer }]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: 'ai', content: 'The connection was lost in the void...' },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <div className="container">
-      <div className="chat-header"></div>
-      {messages.map((msg, index) => (
-        <div key={index}>{msg.content}
-        </div>
-      ))}
-      <form
-      className="chat-body"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit();
-      }
-      }>
-        <input
-          type="text"
-          placeholder="Ask a question!"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-        ></input>
-        <button
-          type='submit'
-        ></button>
-      </form>
+    <div className="chat-container">
+      <div className="chat-header">
+        <div className="header-icon" />
+        <h1>Midnight Knowledge Base</h1>
+      </div>
+
+      <div className="chat-messages">
+        {messages.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">&#9789;</div>
+            <p>Ask anything about the Midnight expansion</p>
+          </div>
+        ) : (
+          messages.map((msg, i) => (
+            <div key={i} className={`message message-${msg.role}`}>
+              {msg.content}
+            </div>
+          ))
+        )}
+
+        {isLoading && (
+          <div className="messsage message-ai">
+            <div className="loading-dots">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="chat-input-area">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Ask about Midnight..."
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            disabled={isLoading}
+          ></input>
+          <button type="submit" disabled={!userInput.trim() || isLoading}></button>
+        </form>
+      </div>
     </div>
   );
 }
