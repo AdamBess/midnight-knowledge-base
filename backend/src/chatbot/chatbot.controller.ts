@@ -9,8 +9,8 @@ export class ChatbotController {
     ) {}
 
     @Post('chat')
-    chat(@Body('question') question: string) {
-        return this.chatbotService.chat(question);
+    chat(@Body('question') question: string, @Body('threadId') threadId: string) {
+        return this.chatbotService.chat(question, threadId);
     }
     
     @Post('ingest')

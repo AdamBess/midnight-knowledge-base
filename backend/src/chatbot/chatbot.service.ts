@@ -35,7 +35,7 @@ export class ChatbotService {
     await this.vectorStore.addDocuments(docs);
   }
 
-  async chat(question: string) {
+  async chat(question: string, threadId: string) {
     const agent = await this.createChatAgent();
 
     let agentInputs = {
@@ -43,7 +43,7 @@ export class ChatbotService {
     };
 
     const result = await agent.invoke(agentInputs, {
-      configurable: { thread_id: "1" }
+      configurable: { thread_id: threadId }
     },);
     return { answer: result.messages[result.messages.length - 1].content }
   }
