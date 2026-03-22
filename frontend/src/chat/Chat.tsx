@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import './Chat.css';
 
 interface Message {
   role: 'user' | 'ai';
   content: string;
 }
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }, [messages]);
 
   async function handleSubmit() {
     if (!userInput.trim() || isLoading) return;
@@ -59,7 +68,7 @@ export default function Chat() {
         )}
 
         {isLoading && (
-          <div className="messsage message-ai">
+          <div className="message message-ai">
             <div className="loading-dots">
               <span />
               <span />
@@ -67,6 +76,8 @@ export default function Chat() {
             </div>
           </div>
         )}
+
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input-area">
@@ -83,7 +94,10 @@ export default function Chat() {
             onChange={(e) => setUserInput(e.target.value)}
             disabled={isLoading}
           ></input>
-          <button type="submit" disabled={!userInput.trim() || isLoading}></button>
+          <button
+            type="submit"
+            disabled={!userInput.trim() || isLoading}
+          >Send</button>
         </form>
       </div>
     </div>
