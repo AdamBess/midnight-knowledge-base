@@ -90,7 +90,7 @@ sequenceDiagram
 ### Prerequisites
 
 - Node.js 20+
-- PostgreSQL with [pgvector](https://github.com/pgvector/pgvector) extension
+- Docker
 - OpenAI API key
 - pnpm
 
@@ -102,24 +102,29 @@ sequenceDiagram
    cd rag-chatbot
    ```
 
-2. Install dependencies
-   ```bash
-   pnpm install
-   ```
-
-3. Configure environment variables
+2. Configure environment variables
    ```bash
    cp .env.example .env
    # Edit .env with your credentials
    ```
 
-4. Start the backend
+3. Start the database
+   ```bash
+   docker compose up -d
+   ```
+
+4. Install dependencies
+   ```bash
+   pnpm install
+   ```
+
+5. Start the backend
    ```bash
    cd backend
    pnpm start:dev
    ```
 
-5. Ingest data (one-time)
+6. Ingest data (one-time)
    ```bash
    curl -X POST http://localhost:3000/chatbot/ingest
    ```
