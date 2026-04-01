@@ -77,6 +77,7 @@ sequenceDiagram
 | Vector Store | PostgreSQL + pgvector |
 | Web Scraping | Playwright |
 | Markdown Rendering | react-markdown, remark-gfm |
+| Tracing | LangSmith |
 
 ## Features
 
@@ -84,6 +85,7 @@ sequenceDiagram
 - **Chat history** - Maintains conversation context per session using LangGraph MemorySaver with unique thread IDs
 - **Markdown responses** - AI responses rendered as formatted markdown with GitHub-Flavored Markdown support
 - **WoW Midnight theme** - Custom dark UI inspired by the Midnight expansion
+- **LangSmith tracing** - Agent calls and RAG pipeline steps visible in LangSmith dashboard
 
 ## Getting Started
 
